@@ -78,6 +78,7 @@
         "common.minecraft.MushroomBlockMixin",
         "common.minecraft.ServerAdvancementManagerMixin",
         "common.minecraft.ServerLifecycleHooksMixin",
+        "common.minecraft.SnifferEggBlockMixin",
         "common.sandworms.WormSignHandlerMixin",
         "common.simply_stacked_dimensions.TeleportHandlerMixin",
         "common.species.BirtMixin",
@@ -109,7 +110,8 @@
         "common.vintageimprovements.LatheRotatingBlockMixin",
         "common.vintageimprovements.VibratingRecipeMixin",
         "common.wab.CommonSetupMixin",
-        "common.wab.EaterAttackPlayerGoalMixin",
+        "common.wab.CrusherMixin",
+        "common.wab.EaterMixin",
         "common.wab.QuickSandMixin",
         "common.wab.SurferMixin",
         "common.wab.ToxlacanthMixin"
