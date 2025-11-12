@@ -1,0 +1,37 @@
+spotless {
+    encoding 'UTF-8'
+    ratchetFrom 'origin/dev'
+
+    format 'misc', {
+        target '.gitignore'
+
+        trimTrailingWhitespace()
+        leadingTabsToSpaces()
+        endWithNewline()
+    }
+
+
+    java {
+        target project.fileTree(project.rootDir) {
+            include 'src/*/java/**/*.java'
+            exclude 'src/**/compat/emi/ExportedOreVeinInfo.java'
+        }
+
+        endWithNewline()
+        indentWithSpaces()
+        removeUnusedImports()
+        toggleOffOn()
+        eclipse().configFile 'spotless/spotless.eclipseformat.xml'
+        importOrderFile 'spotless/spotless.importorder'
+
+        bumpThisNumberIfACustomStepChanges(1)
+    }
+
+    json {
+        target 'src/*/resources/**/*.json'
+        targetExclude 'src/generated/resources/**'
+        simple()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+}

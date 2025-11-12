@@ -1,0 +1,99 @@
+
+
+
+legacyForge {
+    version = libs.versions.minecraftForge.get()
+
+
+
+    parchment {
+        minecraftVersion = libs.versions.minecraft.get()
+        mappingsVersion = libs.versions.parchment.get()
+    }
+
+    // When true, this property will add the folder name of all declared run configurations to generated IDE run configurations.
+    // The folder name can be set on a run configuration using the "folderName" property.
+    // By default, the folder name of a run configuration is the name of the Gradle project containing it.
+    // generateRunFolders = true
+
+   // accessTransformers = project.file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformers {
+        publish file("src/main/resources/META-INF/accesstransformer.cfg")
+    }
+
+    mods {
+        // define mod <-> source bindings
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+
+    runs {
+
+        client {
+            client()
+            ideName = "Client"
+            gameDirectory.set(file('run/client'))
+
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            systemProperty('mixin.env.remapRefMap', 'true')
+            systemProperty('mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg")
+            systemProperty('forge.enabledGameTestNamespaces', project.mod_id)
+        }
+
+        server {
+            server()
+            ideName = "Server"
+            gameDirectory.set(file('run/server'))
+            programArguments.addAll('--nogui')
+
+            systemProperty('forge.enabledGameTestNamespaces', project.mod_id)
+        }
+
+        data {
+            data()
+            ideName = "Data Generation"
+
+            gameDirectory.set(file('run/data'))
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            programArguments.addAll('--mod', project.mod_id)
+            programArguments.addAll('--all')
+            programArguments.addAll('--output', file('src/generated/resources/').getAbsolutePath())
+            programArguments.addAll('--existing', file('src/main/resources/').getAbsolutePath())
+        }
+
+        // applies to all the run configs above
+        configureEach {
+            // Recommended logging data for a userdev environment
+            // The markers can be added/remove as needed separated by commas.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            systemProperty 'forge.logging.console.level', 'INFO'
+
+        }
+    }
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+
+    config "${mod_id}.mixins.json"
+
+    // THIS PRODUCES A TON OF LOG SPAM THAT DOESN'T NEED TO BE SEEN BY PLAYERS
+    // ONLY ENABLE THIS WHEN WORKING WITH MIXINS! DISABLE IN ALL OTHER CASES
+//    debug.verbose = false
+}
+
+// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}

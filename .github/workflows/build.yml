@@ -130,6 +130,7 @@ jobs:
           add-job-summary: 'on-failure'
           cache-disabled: true
           gradle-home-cache-includes: |
+            .gradle
             caches
             notifications
             jdks

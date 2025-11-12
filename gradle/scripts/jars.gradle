@@ -1,0 +1,25 @@
+base {
+    version = propertyString('mod_version')
+    group = propertyString('mod_package')
+    archivesName = propertyString('mod_name', 'mod_name_suffix')
+}
+
+// Example for how to get properties into the manifest for reading at runtime.
+afterEvaluate {
+//    reobfJar.archiveClassifier = ""
+    tasks.withType(org.gradle.jvm.tasks.Jar).configureEach {
+        destinationDirectory = file('build/libs/')
+        manifest {
+            attributes([
+                    'MixinConfigs': "${mod_id}.mixins.json",
+                    "Specification-Title":  propertyString('mod_id'),
+                    "Specification-Vendor": propertyString('mod_authors'),
+                    "Specification-Version": "1", // We are version 1 of ourselves
+                    "Implementation-Title": propertyString('mod_name'),
+                    "Implementation-Version":  propertyString('mod_version'),
+                    "Implementation-Vendor": propertyString('mod_authors'),
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            ])
+        }
+    }
+}
