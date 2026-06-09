@@ -1,6 +1,9 @@
 {
   "values": [
     "tfg:sample_rack",
+    "tfg:rocket_frame",
+    "tfg:insulated_rocket_frame",
+    "tfg:plated_rocket_frame",
     "tfg:casings/bioculture_rotor_primary",
     "tfg:egh_planter",
     "tfg:grow_light",

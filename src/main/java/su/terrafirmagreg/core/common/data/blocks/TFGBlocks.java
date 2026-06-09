@@ -39,6 +39,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import su.terrafirmagreg.core.TFGCore;
 import su.terrafirmagreg.core.common.block.*;
+import su.terrafirmagreg.core.common.block.rocket.InsulatedRocketFrame;
+import su.terrafirmagreg.core.common.block.rocket.PlatedRocketFrame;
+import su.terrafirmagreg.core.common.block.rocket.RocketFrame;
 import su.terrafirmagreg.core.common.data.TFGFluids;
 import su.terrafirmagreg.core.utils.ModelUtils;
 
@@ -259,6 +262,30 @@ public final class TFGBlocks {
             .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
             .tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .item(BlockItem::new).setData(ProviderType.ITEM_MODEL, NonNullBiConsumer.noop()).build()
+            .register();
+
+    public static final BlockEntry<RocketFrame> ROCKET_FRAME = TFGCore.REGISTRATE.block("rocket_frame", RocketFrame::new)
+            .properties(p -> p.sound(SoundType.COPPER).strength(5, 6).mapColor(MapColor.COLOR_LIGHT_GRAY).noOcclusion())
+            .addLayer(() -> RenderType::cutout)
+            .exBlockstate(GTModels.cubeAllModel(TFGCore.id("block/rocket/rocket_t1_frame")))
+            .tag(CustomTags.MINEABLE_WITH_CONFIG_VALID_PICKAXE_WRENCH)
+            .item(BlockItem::new).build()
+            .register();
+
+    public static final BlockEntry<InsulatedRocketFrame> INSULATED_ROCKET_FRAME = TFGCore.REGISTRATE.block("insulated_rocket_frame", InsulatedRocketFrame::new)
+            .properties(p -> p.sound(SoundType.COPPER).strength(5, 6).mapColor(MapColor.COLOR_LIGHT_GRAY).noOcclusion())
+            .tag(CustomTags.MINEABLE_WITH_CONFIG_VALID_PICKAXE_WRENCH)
+            .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
+            .loot((ctx, prov) -> ctx.dropOther(prov, ROCKET_FRAME.get()))
+            //.item(BlockItem::new).build()
+            .register();
+
+    public static final BlockEntry<PlatedRocketFrame> PLATED_ROCKET_FRAME = TFGCore.REGISTRATE.block("plated_rocket_frame", PlatedRocketFrame::new)
+            .properties(p -> p.sound(SoundType.COPPER).strength(5, 6).mapColor(MapColor.COLOR_LIGHT_GRAY).noOcclusion())
+            .tag(CustomTags.MINEABLE_WITH_CONFIG_VALID_PICKAXE_WRENCH)
+            .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
+            .loot((ctx, prov) -> ctx.dropOther(prov, ROCKET_FRAME.get()))
+            //.item(BlockItem::new).build()
             .register();
 
     public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> dropBetween(Supplier<Item> item, int min, int max) {

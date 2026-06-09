@@ -23,6 +23,7 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import su.terrafirmagreg.core.TFGCore;
 import su.terrafirmagreg.core.common.data.*;
 import su.terrafirmagreg.core.common.data.blocks.TFGBlocks;
+import su.terrafirmagreg.core.common.data.rockets.RocketMaterials;
 import su.terrafirmagreg.core.common.data.tfgt.TFGMachines;
 import su.terrafirmagreg.core.common.data.tfgt.TFGMultiMachines;
 import su.terrafirmagreg.core.common.data.tfgt.TFGRecipeConditions;
@@ -115,6 +116,8 @@ public class CommonProxy {
 
             TFGBlockEntities.finaliseBEModification();
             TFGFluids.registerFluidInteractions();
+
+            RocketMaterials.init();
         });
     }
 
