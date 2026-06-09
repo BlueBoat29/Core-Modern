@@ -56,7 +56,9 @@ public final class TFGBlocks {
         TFGBlocks_Casings.init();
         TFGBlocks_Buds.init();
         TFGBlocks_Wood.init();
-        TFGBlocksAsphalt.init();
+        TFGBlocks_Asphalt.init();
+        TFGBlocks_Girders.init();
+        TFGBlocks_Struts.init();
     }
 
     ////// Decoration blocks
@@ -293,5 +295,4 @@ public final class TFGBlocks {
                 LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(item.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max))))));
     }
-
 }

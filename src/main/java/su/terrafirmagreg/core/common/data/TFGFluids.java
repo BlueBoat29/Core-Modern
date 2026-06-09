@@ -29,6 +29,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import su.terrafirmagreg.core.TFGCore;
 import su.terrafirmagreg.core.common.block.asphalt.AsphaltRoadHelper;
 import su.terrafirmagreg.core.common.data.blocks.TFGBlocks;
+import su.terrafirmagreg.core.common.data.items.TFGItems;
+import su.terrafirmagreg.core.common.data.items.TFGItems_Asphalt;
 
 public class TFGFluids {
 
@@ -110,7 +112,7 @@ public class TFGFluids {
     public static final FluidRegistryObject<ForgeFlowingFluid> ASPHALT_MIX = register(
             "asphalt_mix",
             properties -> properties
-                    .bucket(TFGItemsAsphalt.ASPHALT_MIX_BUCKET),
+                    .bucket(TFGItems_Asphalt.ASPHALT_MIX_BUCKET),
             FluidType.Properties.create()
                     .adjacentPathType(BlockPathTypes.LAVA)
                     .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
@@ -203,6 +205,15 @@ public class TFGFluids {
                         return Blocks.OBSIDIAN.defaultBlockState();
                     else
                         return Blocks.CALCITE.defaultBlockState();
+                }));
+
+        FluidInteractionRegistry.addInteraction(ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
+                SPRING_WATER.getSource().getFluidType(),
+                fluidState -> {
+                    if (fluidState.isSource())
+                        return Blocks.OBSIDIAN.defaultBlockState();
+                    else
+                        return TFCBlocks.ROCK_BLOCKS.get(Rock.ANDESITE).get(Rock.BlockType.RAW).get().defaultBlockState();
                 }));
     }
 
