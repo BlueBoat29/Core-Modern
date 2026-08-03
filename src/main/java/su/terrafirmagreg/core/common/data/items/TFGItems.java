@@ -225,6 +225,11 @@ public class TFGItems {
             .defaultModel()
             .register();
 
+    public static final ItemEntry<GenericFlashlightItem> BASIC_FLASHLIGHT = TFGCore.REGISTRATE.item("basic_flashlight", GenericFlashlightItem::new)
+            .properties(p -> p.stacksTo(1))
+            .defaultModel()
+            .register();
+
     public static <T extends IComponentItem> NonNullConsumer<T> attach(IItemComponent components) {
         return item -> item.attachComponents(components);
     }
