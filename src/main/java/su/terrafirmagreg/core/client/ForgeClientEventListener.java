@@ -1,12 +1,18 @@
 package su.terrafirmagreg.core.client;
 
+import com.cake.struts.compat.flywheel.StrutsFlywheelCompatLoader;
+
 import net.dries007.tfc.client.TFCColors;
+import net.dries007.tfc.client.render.entity.SimpleMobRenderer;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.model.CamelModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
@@ -15,6 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,8 +29,12 @@ import net.minecraftforge.fml.common.Mod;
 
 import su.terrafirmagreg.core.TFGCore;
 import su.terrafirmagreg.core.client.asphalt.AsphaltRoadColorHandlers;
+import su.terrafirmagreg.core.common.data.TFGBlockEntities;
+import su.terrafirmagreg.core.common.data.TFGEntities;
 import su.terrafirmagreg.core.common.data.TFGPlant;
 import su.terrafirmagreg.core.common.data.blocks.TFGBlocks_Earth;
+import su.terrafirmagreg.core.common.entity.camels.TFCBactrianCamelModel;
+import su.terrafirmagreg.core.common.entity.camels.TFCBactrianCamelRenderer;
 import su.terrafirmagreg.core.common.food.nutrient.NutrientEffectsHandler;
 import su.terrafirmagreg.core.common.perf.SupportCache;
 
@@ -49,12 +60,28 @@ public class ForgeClientEventListener {
      */
     @SubscribeEvent
     public static void onComputeFovModifier(ComputeFovModifierEvent event) {
-        Player player = Minecraft.getInstance().player;
-        if (player == null)
+        if (Minecraft.getInstance().options.fovEffectScale().get() <= 0) {
             return;
+        }
+
+        Player player = event.getPlayer();
         AttributeInstance speedAttr = player.getAttribute(Attributes.MOVEMENT_SPEED);
-        if (speedAttr != null && speedAttr.getModifier(NutrientEffectsHandler.GRAIN_SPEED_MODIFIER_UUID) != null) {
-            event.setNewFovModifier(1.0f);
+        if (speedAttr != null) {
+            AttributeModifier grainModifier = speedAttr.getModifier(NutrientEffectsHandler.GRAIN_SPEED_MODIFIER_UUID);
+            if (grainModifier != null) {
+                float walkingSpeed = player.getAbilities().getWalkingSpeed();
+                if (walkingSpeed > 0) {
+                    double speedWithGrain = speedAttr.getValue();
+                    double speedWithoutGrain = speedWithGrain / (1.0 + grainModifier.getAmount());
+
+                    float fWith = (float) ((speedWithGrain / walkingSpeed + 1.0) / 2.0);
+                    float fWithout = (float) ((speedWithoutGrain / walkingSpeed + 1.0) / 2.0);
+
+                    if (fWith > 0) {
+                        event.setNewFovModifier(event.getNewFovModifier() * (fWithout / fWith));
+                    }
+                }
+            }
         }
     }
 
@@ -94,5 +121,14 @@ public class ForgeClientEventListener {
                 TFGBlocks_Earth.PLANTS.get(TFGPlant.RED_OAT_GRASS).get());
 
         AsphaltRoadColorHandlers.registerItems(event);
+    }
+
+    public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        StrutsFlywheelCompatLoader.registerStrutVisual(TFGBlockEntities.STRUT.get());
+
+        event.registerEntityRenderer(TFGEntities.DROMEDARY_CAMEL.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, CamelModel::new, "dromedary_camel").shadow(0.7f)
+                .texture((e) -> ResourceLocation.withDefaultNamespace("textures/entity/camel/camel.png")).build());
+        event.registerEntityRenderer(TFGEntities.BACTRIAN_CAMEL.get(),
+                ctx -> new TFCBactrianCamelRenderer<>(ctx, new TFCBactrianCamelModel(ctx.bakeLayer(TFCBactrianCamelModel.LAYER_LOCATION)), 0.6f));
     }
 }

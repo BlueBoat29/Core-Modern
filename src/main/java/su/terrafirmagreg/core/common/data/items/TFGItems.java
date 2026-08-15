@@ -44,7 +44,6 @@ public class TFGItems {
     public static void init() {
         TFGItems_Asphalt.init();
         TFGItems_Medicines.init();
-        TFGItems_Slimes.init();
     }
 
     public static final ItemEntry<PiglinDisguise> PIGLIN_DISGUISE = TFGCore.REGISTRATE.item("piglin_disguise",
@@ -104,7 +103,8 @@ public class TFGItems {
     public static final ItemEntry<ForgeSpawnEggItem> JERBOA_SPAWN_EGG = registerSpawnEgg(TFGEntities.JERBOA, 0xC8A96E, 0x8B6914);
     public static final ItemEntry<ForgeSpawnEggItem> LEMMING_SPAWN_EGG = registerSpawnEgg(TFGEntities.LEMMING, 0xD4A055, 0x1A1008);
     public static final ItemEntry<ForgeSpawnEggItem> MONGOOSE_SPAWN_EGG = registerSpawnEgg(TFGEntities.MONGOOSE, 0x8C7355, 0x3D2B1A);
-    public static final ItemEntry<ForgeSpawnEggItem> SLIME_SPAWN_EGG = registerSpawnEgg(TFGEntities.TFG_SLIME, 0x6ce3f5, 0x1ca9eb);
+    public static final ItemEntry<ForgeSpawnEggItem> BACTRIAN_CAMEL_SPAWN_EGG = registerSpawnEgg(TFGEntities.BACTRIAN_CAMEL, 0x8C7355, 0x3D2B1A);
+    public static final ItemEntry<ForgeSpawnEggItem> DROMEDARY_CAMEL_SPAWN_EGG = registerSpawnEgg(TFGEntities.DROMEDARY_CAMEL, 0x8C7355, 0x3D2B1A);
 
     @SuppressWarnings("deprecation")
     public static final ItemEntry<BucketItem> MARS_WATER_BUCKET = TFGCore.REGISTRATE.item("semiheavy_ammoniacal_water_bucket",
@@ -130,6 +130,19 @@ public class TFGItems {
     @SuppressWarnings("deprecation")
     public static final ItemEntry<BucketItem> GEYSER_SLURRY_BUCKET = TFGCore.REGISTRATE.item("geyser_slurry_bucket",
             p -> new BucketItem(TFGFluids.GEYSER_SLURRY.getSource(), p))
+            .properties(p -> p.craftRemainder(Items.BUCKET).stacksTo(1))
+            .setData(ProviderType.ITEM_MODEL, NonNullBiConsumer.noop())
+            .register();
+
+    public static final ItemEntry<ChameleonSprayCanItem> CHAMELEON_SPRAY_CAN = TFGCore.REGISTRATE
+            .item("chameleon_spray_can", ChameleonSprayCanItem::new)
+            .properties(p -> p.stacksTo(1))
+            .model((ctx, prov) -> prov.handheld(ctx, prov.modLoc("item/tools/chameleon_spray_can")))
+            .register();
+
+    @SuppressWarnings("deprecation")
+    public static final ItemEntry<BucketItem> PRISMATIC_PAINT_BUCKET = TFGCore.REGISTRATE.item("prismatic_paint_bucket",
+            p -> new BucketItem(TFGFluids.PRISMATIC_PAINT.getSource(), p))
             .properties(p -> p.craftRemainder(Items.BUCKET).stacksTo(1))
             .setData(ProviderType.ITEM_MODEL, NonNullBiConsumer.noop())
             .register();
@@ -208,6 +221,11 @@ public class TFGItems {
     public static ItemEntry<Item> MOLLISOL_MUD_BRICK = TFGCore.REGISTRATE.item("mud_brick/mollisol", Item::new).defaultModel().register();
     public static ItemEntry<Item> OXISOL_MUD_BRICK = TFGCore.REGISTRATE.item("mud_brick/oxisol", Item::new).defaultModel().register();
     public static ItemEntry<Item> PODZOL_MUD_BRICK = TFGCore.REGISTRATE.item("mud_brick/podzol", Item::new).defaultModel().register();
+
+    public static final ItemEntry<Item> SILK_FIBERS = TFGCore.REGISTRATE.item("silk_fibers", Item::new)
+            .properties(p -> p.stacksTo(64))
+            .defaultModel()
+            .register();
 
     public static <T extends IComponentItem> NonNullConsumer<T> attach(IItemComponent components) {
         return item -> item.attachComponents(components);

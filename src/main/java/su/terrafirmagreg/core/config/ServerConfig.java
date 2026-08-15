@@ -11,7 +11,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import earth.terrarium.adastra.api.planets.Planet;
@@ -38,6 +37,23 @@ public final class ServerConfig {
     public final RenderingPropickConfig blueSteelPropickConfig;
     public final RenderingPropickConfig redSteelPropickConfig;
 
+    public final ForgeConfigSpec.IntValue CHAMELEON_SPRAY_CAN_CAPACITY;
+    public final ForgeConfigSpec.IntValue CHAMELEON_SPRAY_CAN_COST_PER_OPERATION;
+    public final ForgeConfigSpec.DoubleValue CHAMELEON_SPRAY_CAN_BULK_MULTIPLIER;
+
+    public final ForgeConfigSpec.IntValue GLASSBLOWING_COOLDOWN;
+    public final ForgeConfigSpec.IntValue GLASSBLOWING_DURATION;
+
+    public final ForgeConfigSpec.DoubleValue QUERN_STRESS_IMPACT;
+    public final ForgeConfigSpec.IntValue QUERN_STRESS_LIMIT;
+    public final ForgeConfigSpec.IntValue QUERN_RPM_LIMIT;
+    public final ForgeConfigSpec.DoubleValue BELLOWS_STRESS_IMPACT;
+    public final ForgeConfigSpec.IntValue BELLOWS_STRESS_LIMIT;
+    public final ForgeConfigSpec.IntValue BELLOWS_RPM_LIMIT;
+    public final ForgeConfigSpec.DoubleValue COMPOSTER_STRESS_IMPACT;
+    public final ForgeConfigSpec.IntValue COMPOSTER_STRESS_LIMIT;
+    public final ForgeConfigSpec.IntValue COMPOSTER_RPM_LIMIT;
+
     public final ForgeConfigSpec.IntValue HARVEST_BASKET_RANGE;
 
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> SYRINGE_BLACKLIST;
@@ -50,6 +66,11 @@ public final class ServerConfig {
     public final ForgeConfigSpec.IntValue snowMaxAccumulationOnUpdate;
     public final ForgeConfigSpec.BooleanValue enableTFGFoodDebuffs;
     public final ForgeConfigSpec.BooleanValue enableTFGFoodBuffs;
+    public final ForgeConfigSpec.IntValue javelinLeashMaxDistance;
+
+    public final ForgeConfigSpec.BooleanValue enableBeneathMiningRestrictions;
+    public final ForgeConfigSpec.IntValue disabledBeneathMiningYLevel;
+    public final ForgeConfigSpec.BooleanValue enableHotPlanetMiningRestrictions;
 
     ServerConfig(ForgeConfigSpec.Builder builder) {
         builder.push("hang_glider");
@@ -130,7 +151,7 @@ public final class ServerConfig {
                 .define("enableSnowCorrection", true);
         snowMaxAccumulationOnUpdate = builder
                 .comment("The maximum amount of snow update to apply for each correction tick")
-                .defineInRange("snowMaxAccumulationOnUpdate", FMLEnvironment.dist.isClient() ? 256 : 0, 0, Integer.MAX_VALUE);
+                .defineInRange("snowMaxAccumulationOnUpdate", 256, 1, Integer.MAX_VALUE);
 
         builder.pop().push("tfg_food_effects");
         enableTFGFoodDebuffs = builder
@@ -139,6 +160,72 @@ public final class ServerConfig {
         enableTFGFoodBuffs = builder
                 .comment("Enables TFG food buff effects. Allows receiving helpful effects from nutrients like Fruits, or transient nutrients like Fulfilling.")
                 .define("enableTFGFoodBuffs", true);
+
+        javelinLeashMaxDistance = builder
+                .comment("The maximum distance a javelin can travel from the player when leashed before it stops (in blocks). Default: 16")
+                .defineInRange("javelinLeashMaxDistance", 16, 1, 64);
+
+        builder.pop().push("mining_restrictions");
+        enableBeneathMiningRestrictions = builder
+                .comment("Enables restrictions on automatic mining machines in the Beneath.")
+                .define("enableBeneathMiningRestrictions", true);
+        disabledBeneathMiningYLevel = builder
+                .comment("Below this Y level, single block gregtech miners and create contraptions cannot mine ores.")
+                .defineInRange("disabledBeneathMiningYLevel", 80, 1, Integer.MAX_VALUE);
+        enableHotPlanetMiningRestrictions = builder
+                .comment("Enables restrictions on automatic mining machines on hot planets.")
+                .define("enableHotPlanetMiningRestrictions", true);
+
+        builder.pop().push("chameleon_spray_can");
+        CHAMELEON_SPRAY_CAN_CAPACITY = builder
+                .comment("\nThe maximum Prismatic Paint capacity of the Chameleon Spray Can (in mB). Default: 8000")
+                .defineInRange("chameleonSprayCanCapacity", 2000, 1, Integer.MAX_VALUE);
+
+        CHAMELEON_SPRAY_CAN_COST_PER_OPERATION = builder
+                .comment("\nThe amount of Prismatic Paint consumed per block/entity recolored (in mB). Default: 1")
+                .defineInRange("chameleonSprayCanCostPerOperation", 1, 0, Integer.MAX_VALUE);
+
+        CHAMELEON_SPRAY_CAN_BULK_MULTIPLIER = builder
+                .comment("\nThe fluid consumption multiplier applied when chain-painting/bulk-painting blocks (e.g. 0.85 equals a 15% discount). Set to 1.0 to disable discounts.")
+                .defineInRange("chameleonSprayCanBulkMultiplier", 1.0, 0.0, 10.0);
+
+        builder.pop().push("glassblowing");
+        GLASSBLOWING_COOLDOWN = builder
+                .comment("\nBase glassblowing cooldown in ticks. Default: 20, min: 2, max: maxInt")
+                .defineInRange("baseGlassblowingCooldown", 20, 2, Integer.MAX_VALUE);
+        GLASSBLOWING_DURATION = builder
+                .comment("\nBase glassblowing duration in ticks. Default: 40, min: 2, max: maxInt")
+                .defineInRange("baseGlassblowingCooldown", 40, 2, Integer.MAX_VALUE);
+
+        builder.pop().push("tfc_create_compatibility");
+        QUERN_STRESS_IMPACT = builder
+                .comment("\nStress impact multiplier for the quern. Default: 0.25, min: 0, max: 64")
+                .defineInRange("quernStressImpact", 0.25, 0, 64);
+        QUERN_RPM_LIMIT = builder
+                .comment("\nRPM limit of the quern. Values over 32 may lead to broken animations! Default: 32, min: 1, max: intMax")
+                .defineInRange("quernRpmLimit", 32, 1, Integer.MAX_VALUE);
+        QUERN_STRESS_LIMIT = builder
+                .comment("\nStress limit of the quern. Default: 8, min: 1, max: intMax")
+                .defineInRange("quernStressLimit", 8, 1, Integer.MAX_VALUE);
+        BELLOWS_STRESS_IMPACT = builder
+                .comment("\nStress impact multiplier for the bellows. Default: 0.5, min: 0, max: 64")
+                .defineInRange("bellowsStressImpact", 0.5, 0, 64);
+        BELLOWS_STRESS_LIMIT = builder
+                .comment("\nStress limit of the bellows. Default: 8, min: 1, max: intMax")
+                .defineInRange("bellowsStressLimit", 8, 1, Integer.MAX_VALUE);
+        BELLOWS_RPM_LIMIT = builder
+                .comment("\nRPM limit of the bellows. Values over 16 may lead to broken animations! Default: 16, min: 1, max: intMax")
+                .defineInRange("bellowsRpmLimit", 16, 1, Integer.MAX_VALUE);
+        COMPOSTER_STRESS_IMPACT = builder
+                .comment("\nStress impact multiplier for the compost tumbler. Default: 0.25, min: 0, max: 64")
+                .defineInRange("composterStressImpact", 0.25, 0, 64);
+        COMPOSTER_STRESS_LIMIT = builder
+                .comment("\nStress limit of the compost tumbler. Default: 8, min: 1, max: intMax")
+                .defineInRange("composterStressLimit", 8, 1, Integer.MAX_VALUE);
+        COMPOSTER_RPM_LIMIT = builder
+                .comment(
+                        "\nRPM limit of the compost tumbler. Values over 32 may lead to broken animations! RPM does not have any affect on the compost tumbler functionality. Default: 32, min: 1, max: intMax")
+                .defineInRange("composterRpmLimit", 32, 1, Integer.MAX_VALUE);
 
         builder.pop();
     }

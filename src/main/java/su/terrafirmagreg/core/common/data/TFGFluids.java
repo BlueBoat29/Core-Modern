@@ -132,6 +132,32 @@ public class TFGFluids {
             MixingFluid.Source::new,
             MixingFluid.Flowing::new);
 
+    public static final FluidRegistryObject<ForgeFlowingFluid> PRISMATIC_PAINT = register(
+            "prismatic_paint",
+            properties -> properties
+                    .bucket(TFGItems.PRISMATIC_PAINT_BUCKET),
+            FluidType.Properties.create()
+                    .adjacentPathType(BlockPathTypes.WATER)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .density(1200)
+                    .viscosity(2000)
+                    .canConvertToSource(false)
+                    .canExtinguish(true)
+                    .canHydrate(false)
+                    .supportsBoating(false)
+                    .canDrown(true)
+                    .canSwim(true)
+                    .temperature(293)
+                    .canPushEntity(true)
+                    .descriptionId("fluid.tfg.prismatic_paint"),
+            new FluidTypeClientProperties(ALPHA_MASK | 0xFFFFFF,
+                    ResourceLocation.fromNamespaceAndPath(TFGCore.MOD_ID, "block/fluids/prismatic_dye_still"),
+                    ResourceLocation.fromNamespaceAndPath(TFGCore.MOD_ID, "block/fluids/prismatic_dye_flow"),
+                    null, null),
+            MixingFluid.Source::new,
+            MixingFluid.Flowing::new);
+
     // TFC, why did you have to make this private
 
     private static FluidType.Properties waterLike() {
@@ -208,7 +234,7 @@ public class TFGFluids {
                 }));
 
         FluidInteractionRegistry.addInteraction(ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
-                SPRING_WATER.getSource().getFluidType(),
+                SALT_WATER.getSource().getFluidType(),
                 fluidState -> {
                     if (fluidState.isSource())
                         return Blocks.OBSIDIAN.defaultBlockState();
