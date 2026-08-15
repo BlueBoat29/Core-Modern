@@ -1,11 +1,13 @@
 package su.terrafirmagreg.core.client.dynamic_lights;
 
+import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.world.level.Level;
 
 import toni.sodiumdynamiclights.DynamicLightSource;
+import toni.sodiumdynamiclights.SodiumDynamicLights;
 
 public class PointLightSource implements DynamicLightSource {
 
@@ -65,6 +67,15 @@ public class PointLightSource implements DynamicLightSource {
 
     @Override
     public boolean sodiumdynamiclights$updateDynamicLight(@NotNull LevelRenderer levelRenderer) {
+
+        if (luminance > 0) {
+            var chunkPos = new BlockPos.MutableBlockPos(Math.floorDiv((int)x, 16),
+                    Math.floorDiv((int)y, 16),
+                    Math.floorDiv((int)z, 16));
+            SodiumDynamicLights.scheduleChunkRebuild(levelRenderer, chunkPos);
+            return true;
+        }
+
         return false;
     }
 

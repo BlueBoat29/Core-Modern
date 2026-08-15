@@ -1,5 +1,6 @@
 package su.terrafirmagreg.core.common.item;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -7,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec2;
 
 import su.terrafirmagreg.core.client.dynamic_lights.ConeLightSource;
 
@@ -25,7 +27,8 @@ public class GenericFlashlightItem extends Item {
             heldStack.setTag(heldStackTag);
 
             if (level.isClientSide) {
-                new ConeLightSource().testing(level, player.blockPosition());
+                var targetPos = calculateLookingPos(player.getRotationVector(), player.blockPosition(), player.getEyeY());
+                new ConeLightSource().testing(level, targetPos);
                 System.out.println("made light");
             }
 
@@ -58,5 +61,22 @@ public class GenericFlashlightItem extends Item {
     //0 = off, 1 = on
     public enum FlashlightStatus {
         OFF, ON
+    }
+
+    private BlockPos calculateLookingPos(Vec2 viewVec, BlockPos pos, double eyePos) {
+        int magnitude = 5;
+        float xRot = -viewVec.y;
+        float yRot = -viewVec.x;
+
+        var xChange = magnitude * Math.sin(xRot);
+        var zChange = magnitude * Math.cos(xRot);
+        var yChange = magnitude * Math.sin(yRot);
+
+        System.out.println("xRot " + xRot);
+        System.out.println("yRot " + yRot);
+        System.out.println(new BlockPos((int) (pos.getX() + xChange), (int) (eyePos + yChange), (int) (pos.getZ() + zChange)));
+
+        return new BlockPos((int) (pos.getX() + xChange), (int) (eyePos + yChange), (int) (pos.getZ() + zChange));
+
     }
 }

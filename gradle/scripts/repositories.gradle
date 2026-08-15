@@ -84,4 +84,9 @@ repositories {
         }
     }
 
+    maven {
+        name = "Sleeping Town"
+        url = "https://repo.sleeping.town/"
+    }
+
 }
