@@ -1,6 +1,7 @@
 {
   "values": [
     "tfg:sample_rack",
+    "tfg:rocket_workbench",
     "tfg:rocket_frame",
     "tfg:insulated_rocket_frame",
     "tfg:plated_rocket_frame",

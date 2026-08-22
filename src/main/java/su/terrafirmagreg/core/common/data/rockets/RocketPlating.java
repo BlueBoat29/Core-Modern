@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
-public record RocketPlating(int stateID, Item plateItem, ResourceLocation name, int count, TagKey<Item> offhandTool) {
+public record RocketPlating(int stateID, Item plateItem, ResourceLocation name, int count, TagKey<Item> offhandTool, int strength) {
     @Override
     public @NotNull String toString() {
         return name.toString();

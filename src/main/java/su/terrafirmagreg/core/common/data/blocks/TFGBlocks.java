@@ -49,6 +49,7 @@ import su.terrafirmagreg.core.common.block.create.TitaniumSteamFlywheelBlock;
 import su.terrafirmagreg.core.common.block.rocket.InsulatedRocketFrame;
 import su.terrafirmagreg.core.common.block.rocket.PlatedRocketFrame;
 import su.terrafirmagreg.core.common.block.rocket.RocketFrame;
+import su.terrafirmagreg.core.common.block.rocket.RocketWorkbenchBlock;
 import su.terrafirmagreg.core.common.data.TFGFluids;
 import su.terrafirmagreg.core.utils.ModelUtils;
 
@@ -298,6 +299,14 @@ public final class TFGBlocks {
             .transform(TagGen.pickaxeOnly())
             .item()
             .transform(ModelGen.customItemModel())
+            .register();
+
+    public static final BlockEntry<RocketWorkbenchBlock> ROCKET_WORKBENCH = TFGCore.REGISTRATE.block("rocket_workbench", RocketWorkbenchBlock::new)
+            .properties(p -> p.sound(SoundType.COPPER).strength(5, 6).mapColor(MapColor.COLOR_LIGHT_GRAY).noOcclusion())
+            .addLayer(() -> RenderType::cutout)
+            .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
+            .tag(CustomTags.MINEABLE_WITH_CONFIG_VALID_PICKAXE_WRENCH)
+            .item(BlockItem::new).build()
             .register();
 
     public static final BlockEntry<RocketFrame> ROCKET_FRAME = TFGCore.REGISTRATE.block("rocket_frame", RocketFrame::new)

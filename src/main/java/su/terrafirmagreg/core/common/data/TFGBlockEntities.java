@@ -56,6 +56,10 @@ public class TFGBlockEntities {
             .validBlock(TFGBlocks.ARTISAN_TABLE)
             .register();
 
+    public static final BlockEntityEntry<RocketWorkbenchBlockEntity> ROCKET_WORKBENCH = TFGCore.REGISTRATE.blockEntity("rocket_workbench", RocketWorkbenchBlockEntity::new)
+            .validBlock(TFGBlocks.ROCKET_WORKBENCH)
+            .register();
+
     public static final BlockEntityEntry<ReflectorBlockEntity> REFLECTOR_BLOCK_ENTITY = TFGCore.REGISTRATE.blockEntity("reflector", ReflectorBlockEntity::new)
             .validBlock(TFGBlocks_Casings.REFLECTOR_BLOCK)
             .register();
