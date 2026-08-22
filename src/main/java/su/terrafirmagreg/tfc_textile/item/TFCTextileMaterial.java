@@ -32,11 +32,11 @@ public final class TFCTextileMaterial implements ArmorMaterial, TemperatureAlter
     public static final TFCTextileMaterial LINEN = new TFCTextileMaterial(
             "tfc_textile:linen_cloth",
             SoundEvents.WOOL_PLACE,
-            TFCTextileItems.LINEN_CLOTH,
-            ClothesMaterial.T2_DURABILITY,
+            ForgeRegistries.ITEMS.getValue(TFGCore.id("linen_cloth")),
+            ClothesMaterial.T3_DURABILITY,
             1,
             ClothesMaterial.T1_COOLING,
-            ClothesMaterial.T3_INSULATION);
+            ClothesMaterial.T1_INSULATION);
 
     public static final TFCTextileMaterial RAW_HIDE = new TFCTextileMaterial(
             "tfc_textile:raw_hide",
@@ -69,10 +69,10 @@ public final class TFCTextileMaterial implements ArmorMaterial, TemperatureAlter
             "tfc_textile:cougar_fur",
             SoundEvents.WOOL_PLACE,
             TFCTextileItems.COUGAR_FUR,
-            ClothesMaterial.T3_DURABILITY,
+            ClothesMaterial.T2_DURABILITY,
             1,
             ClothesMaterial.T3_WARMING,
-            ClothesMaterial.T3_INSULATION);
+            ClothesMaterial.T2_INSULATION);
 
     public static final TFCTextileMaterial TIGER = new TFCTextileMaterial(
             "tfc_textile:tiger_fur",
@@ -150,10 +150,10 @@ public final class TFCTextileMaterial implements ArmorMaterial, TemperatureAlter
             "tfc_textile:red_elk",
             SoundEvents.WOOL_PLACE,
             BeneathItems.CURSED_HIDE,
-            ClothesMaterial.T3_DURABILITY,
+            ClothesMaterial.T4_DURABILITY,
             2,
             ClothesMaterial.T3_COOLING,
-            ClothesMaterial.T3_INSULATION);
+            ClothesMaterial.T4_INSULATION);
 
     public static final TFCTextileMaterial PHANTOM_SILK = new TFCTextileMaterial(
             "tfc_textile:phantom_silk",
