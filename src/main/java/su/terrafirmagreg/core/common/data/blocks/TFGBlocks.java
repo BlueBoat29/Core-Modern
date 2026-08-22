@@ -39,8 +39,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import su.terrafirmagreg.core.TFGCore;
 import su.terrafirmagreg.core.common.block.*;
-import su.terrafirmagreg.core.common.block.create.TitaniumSteamEngineBlock;
-import su.terrafirmagreg.core.common.block.create.TitaniumSteamFlywheelBlock;
 import su.terrafirmagreg.core.common.block.rocket.InsulatedRocketFrame;
 import su.terrafirmagreg.core.common.block.rocket.PlatedRocketFrame;
 import su.terrafirmagreg.core.common.block.rocket.RocketFrame;
@@ -279,22 +277,6 @@ public final class TFGBlocks {
             .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
             .tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .item(BlockItem::new).setData(ProviderType.ITEM_MODEL, NonNullBiConsumer.noop()).build()
-            .register();
-
-    public static final BlockEntry<TitaniumSteamFlywheelBlock> TITANIUM_FLYWHEEL = TFGCore.REGISTRATE.block("titanium_flywheel", TitaniumSteamFlywheelBlock::new)
-            .initialProperties(SharedProperties::softMetal)
-            .properties(BlockBehaviour.Properties::noOcclusion)
-            .transform(TagGen.axeOrPickaxe())
-            .blockstate(new OldFlywheelGenerator()::generate)
-            .item()
-            .transform(ModelGen.customItemModel())
-            .register();
-
-    public static final BlockEntry<TitaniumSteamEngineBlock> TITANIUM_STEAM_ENGINE = TFGCore.REGISTRATE.block("titanium_steam_engine", TitaniumSteamEngineBlock::new)
-            .initialProperties(SharedProperties::softMetal)
-            .transform(TagGen.pickaxeOnly())
-            .item()
-            .transform(ModelGen.customItemModel())
             .register();
 
     public static final BlockEntry<RocketWorkbenchBlock> ROCKET_WORKBENCH = TFGCore.REGISTRATE.block("rocket_workbench", RocketWorkbenchBlock::new)
