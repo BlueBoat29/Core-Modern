@@ -45,6 +45,7 @@ public class RocketWorkbenchContainer extends BlockEntityContainer<RocketWorkben
      */
     public RocketWorkbenchContainer(RocketWorkbenchBlockEntity blockEntity, Inventory playerInventory, int windowId) {
         super(TFGContainers.ROCKET_WORKBENCH.get(), windowId, blockEntity);
+
     }
 
     /**

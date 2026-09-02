@@ -16,7 +16,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import su.terrafirmagreg.core.common.data.blocks.TFGBlocks;
-import su.terrafirmagreg.core.common.data.rockets.RocketInsulation;
+import su.terrafirmagreg.core.common.data.rockets.MaterialRecords.RocketInsulation;
 import su.terrafirmagreg.core.common.data.rockets.RocketMaterials;
 
 public class RocketFrame extends Block {

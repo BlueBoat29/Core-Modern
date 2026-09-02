@@ -15,8 +15,16 @@ import su.terrafirmagreg.core.TFGCore;
 import su.terrafirmagreg.core.common.block.rocket.InsulatedRocketFrame;
 import su.terrafirmagreg.core.common.block.rocket.PlatedRocketFrame;
 import su.terrafirmagreg.core.common.data.blocks.TFGBlocks;
+import su.terrafirmagreg.core.common.data.items.TFGItems_Rocket;
+import su.terrafirmagreg.core.common.data.rockets.MaterialRecords.RocketEngine;
+import su.terrafirmagreg.core.common.data.rockets.MaterialRecords.RocketFrame;
+import su.terrafirmagreg.core.common.data.rockets.MaterialRecords.RocketInsulation;
+import su.terrafirmagreg.core.common.data.rockets.MaterialRecords.RocketPlating;
 
 public class RocketMaterials {
+    public static final Map<Item, RocketFrame> ROCKET_FRAME = new HashMap<>();
+    public static final List<RocketFrame> LIST_ROCKET_FRAME = new ArrayList<>();
+
     public static final Map<Item, RocketPlating> ROCKET_PLATING = new HashMap<>();
     public static final Map<Integer, RocketPlating> ROCKET_PLATING_BY_STATE = new HashMap<>();
     public static final List<RocketPlating> LIST_ROCKET_PLATING = new ArrayList<>();
@@ -25,10 +33,10 @@ public class RocketMaterials {
     public static final Map<Integer, RocketInsulation> ROCKET_INSULATION_BY_STATE = new HashMap<>();
     public static final List<RocketInsulation> LIST_ROCKET_INSULATION = new ArrayList<>();
 
-    public static final Map<Item, RocketFrame> ROCKET_FRAME = new HashMap<>();
-    public static final List<RocketFrame> LIST_ROCKET_FRAME = new ArrayList<>();
+    public static final Map<Item, RocketEngine> ROCKET_ENGINE = new HashMap<>();
+    public static final List<RocketEngine> LIST_ROCKET_ENGINE = new ArrayList<>();
 
-    public static final Map<ResourceLocation, List<?>> MENU_GROUPS = new LinkedHashMap<>();
+    public static final List<RocketMenuGroup> MENU_GROUPS = new ArrayList<>();
 
     public static final TagKey<Item> REMOVAL_TOOL = CustomTags.CROWBARS;
 
@@ -79,9 +87,21 @@ public class RocketMaterials {
                 1,
                 4);
 
-        MENU_GROUPS.put(TFGCore.id("frame"), LIST_ROCKET_FRAME);
-        MENU_GROUPS.put(TFGCore.id("plating"), LIST_ROCKET_PLATING);
-        MENU_GROUPS.put(TFGCore.id("insulation"), LIST_ROCKET_INSULATION);
+        //Tier 1 Engine
+        addEngine(ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("ad_astra", "steel_engine")),
+                TFGCore.id("tier_1_engine"),
+                100,
+                1.0f);
+        //Tier 2 Engine
+        addEngine(ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("ad_astra", "desh_engine")),
+                TFGCore.id("tier_2_engine"),
+                250,
+                1.5f);
+
+        MENU_GROUPS.add(new RocketMenuGroup(TFGItems_Rocket.ROCKET_FRAME_ICON.asStack(), TFGCore.id("frame"), LIST_ROCKET_FRAME));
+        MENU_GROUPS.add(new RocketMenuGroup(TFGItems_Rocket.ROCKET_PLATING_ICON.asStack(), TFGCore.id("plate"), LIST_ROCKET_PLATING));
+        MENU_GROUPS.add(new RocketMenuGroup(TFGItems_Rocket.ROCKET_INSULATION_ICON.asStack(), TFGCore.id("insulation"), LIST_ROCKET_INSULATION));
+        MENU_GROUPS.add(new RocketMenuGroup(TFGItems_Rocket.ROCKET_ENGINE_ICON.asStack(), TFGCore.id("engine"), LIST_ROCKET_ENGINE));
     }
 
     private static void addFrame(Item frameItem, ResourceLocation name, int strength) {
@@ -119,6 +139,17 @@ public class RocketMaterials {
         ROCKET_INSULATION.put(insulationItem, newInsulation);
         ROCKET_INSULATION_BY_STATE.put(newInsulation.stateID(), newInsulation);
         LIST_ROCKET_INSULATION.add(newInsulation);
+    }
+
+    private static void addEngine(Item engineItem, ResourceLocation name, int thrust, float fuelUseFactor) {
+        RocketEngine newEngine = new RocketEngine(
+                engineItem,
+                name,
+                thrust,
+                fuelUseFactor);
+
+        ROCKET_ENGINE.put(engineItem, newEngine);
+        LIST_ROCKET_ENGINE.add(newEngine);
     }
 
 }
